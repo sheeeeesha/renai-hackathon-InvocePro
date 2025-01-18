@@ -40,4 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-server/config/serviceAccountKey.json
+# server/config/serviceAccountKey.json
+# server/email/credentials.json
