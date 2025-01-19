@@ -1,11 +1,18 @@
 
 # **InvoicePro - Intelligent Invoice Extraction and Analysis Tool**  
-*Developed by InnoSync Squad*
-## **Team: InnoSync Squad**
-Ashish Tamhankar
-Anirudh Gupta
-Manan Dadoo
-Keshav Sonawane
+*Developed by InvoSync Squad*
+## **Team: InvoSync Squad**
+Ashish Tamhankar |
+Anirudh Gupta |
+Manan Dadoo |
+Keshav Sonawane 
+
+# **.env variables**
+WORQHAT_API_KEY
+WORQHAT_API_URL
+WORQHAT_API_URL2
+GOOGLE_APPLICATION_CREDENTIALS
+PORT=5000
 
 ## **Project Overview**
 InvoicePro is a powerful tool designed to automatically extract and analyze relevant data from invoices. Developed with **Next.js** and **Tailwind CSS**, InvoicePro helps businesses and individuals streamline their invoice management process by extracting key details such as customer name, invoice number, product name, GST information, and more. With the integration of Gmail and Firebase, the tool can fetch invoices directly from Gmail, process the contents, and present the data in an easily accessible format.
@@ -26,10 +33,8 @@ InvoicePro aims to save time, reduce human error, and improve data processing ef
 ## **Tech Stack**
 - **Next.js**: Framework for building the full-stack application.
 - **Tailwind CSS**: Utility-first CSS framework for creating a responsive design.
-- **Firebase**: Backend database for storing invoice data and user information.
 - **Node.js**: Server-side platform for handling API requests.
 - **OAuth 2.0**: Authentication mechanism to securely access Gmail.
-- **Geist Font**: A modern font optimized for better UI appearance.
 
 ---
 
@@ -45,7 +50,7 @@ Start by cloning the repository to your local machine:
 
 ```bash
 git clone https://github.com/sheeeeesha/renAi-Team-InvoSync.git
-cd renai
+cd renAi-Team-InvoSync
 ```
 
 ### **Install Dependencies**
