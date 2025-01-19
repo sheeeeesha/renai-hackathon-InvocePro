@@ -188,7 +188,9 @@ const fs = require('fs');
 const path = require('path');
 const gmailAuth = require('./email/gmailAuth'); // Import Gmail auth module
 const { processPdfWithWorqHat } = require('./processPdf'); // Assuming processPdfWithWorqHat exists
-const { createExcel } = require('./generateExcel'); // Assuming createExcel exists
+// const { createExcel } = require('./generateExcel'); // Assuming createExcel exists
+const { processExtractedTextWithWorqHat } = require('./processExtractedText');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -254,32 +256,47 @@ app.get('/start-process', async (req, res) => {
 
     console.log('Saved PDF file paths:', savedFiles);
 
-    const pdfTexts = [];
+    const structuredData = [];
 
     // Process each file
     for (const filePath of savedFiles) {
       console.log('Processing file:', filePath);
 
-      // Process the PDF with WorqHat
+      // Process the PDF with WorqHat to extract text
       const extractedText = await processPdfWithWorqHat(filePath);
+      // console.log("Extracted Text:", extractedText);
+      if (extractedText) {
+        // console.log("Extracted Text:", extractedText);
+        // Process the extracted text to generate structured data
+        const table = await processExtractedTextWithWorqHat(extractedText.data);
+        console.log("Processed response from WorqHat API:");
+        console.log(JSON.stringify(table, null, 2)); // Pretty-print the response
 
-      // Collect the extracted text
-      pdfTexts.push(extractedText);
+        // Append the table (structured data) to the main array
+        structuredData.push(table);
+      }
     }
 
-    // Parse structured data and create an Excel file
-    const { parseMultiplePdfs, createExcelFromKeyValuePairs } = require('./generateExcel');
-    const structuredData = parseMultiplePdfs(pdfTexts);
-    createExcelFromKeyValuePairs(structuredData);
+    // // Generate a CSV file from the structured data
+    // const outputFilePath = path.join(__dirname, 'output', 'data.csv');
+    // createCsvFromStructuredData(structuredData, outputFilePath);
 
-    res.send('Process completed successfully. Excel sheet created.');
+    // res.send('Process completed successfully. CSV file created.');
   } catch (err) {
     console.error('Error during process:', err.message);
     res.status(500).send('Error during process: ' + err.message);
   }
 });
 
+// CSV generation function
+function createCsvFromStructuredData(data, outputFilePath) {
+  const headers = Object.keys(data[0]).join(','); // CSV headers from the first object
+  const rows = data.map(row => Object.values(row).join(',')); // CSV rows
 
+  const csvContent = [headers, ...rows].join('\n'); // Combine headers and rows
+  fs.writeFileSync(outputFilePath, csvContent, 'utf8');
+  console.log(`CSV file created at: ${outputFilePath}`);
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
