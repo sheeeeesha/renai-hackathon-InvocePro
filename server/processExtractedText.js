@@ -61,10 +61,10 @@
 // }
 
 // module.exports = { processExtractedTextWithWorqHat };
-
+// const { convertTextToSingleLine } = require('./convertTextToSingleLine'); // Import the function
 
 const axios = require("axios");
-// const { convertTextToSingleLine } = require('./convertTextToSingleLine'); // Import the function
+
 
 require("dotenv").config();
 
@@ -96,9 +96,40 @@ async function processExtractedTextWithWorqHat(extractedText, prompt = null) {
   // Convert the extracted text to a single line
   // const singleLineText = convertTextToSingleLine(extractedText);
 
-  const trainingData = prompt
+//   const trainingData = prompt
+//   ? prompt
+//   : `Please analyze the following invoice text and extract the relevant information strictly in a key-value pair format. Only return the key-value pairs and nothing else. The keys should be:
+// 1) Customer Name
+// 2) Invoice Number
+// 3) Supplier Name (or Store Name)
+// 4) Date of Invoice
+// 5) Product Name(s)
+// 6) Taxable Value
+// 7) GST ID
+// 8) Total Amount
+// 9) Quantity
+
+// The feature names in the invoice text may vary, but you need to map them correctly to the keys above. Here is the invoice text you need to analyze:
+
+// {Insert the invoice text here}
+
+// Return only the following key-value pairs:
+
+// {
+//   "Customer Name": "Extracted Customer Name",
+//   "Invoice Number": "Extracted Invoice Number",
+//   "Supplier Name": "Extracted Supplier Name",
+//   "Date": "Extracted Date",
+//   "Product Name": "Extracted Product Name(s)",
+//   "Taxable Value": "Extracted Taxable Value",
+//   "GST ID": "Extracted GST ID",
+//   "Total Amount": "Extracted Total Amount",
+//   "Quantity": "Extracted Quantity"
+// }`;
+
+const trainingData = prompt
   ? prompt
-  : `Please analyze the following invoice text and extract the relevant information, returning the details in a key-value pair format. The keys should be:
+  : `Please analyze the following invoice text and extract the relevant information strictly in a valid JSON format. Only return the JSON object and nothing else. The keys should be:
 1) Customer Name
 2) Invoice Number
 3) Supplier Name (or Store Name)
@@ -109,23 +140,12 @@ async function processExtractedTextWithWorqHat(extractedText, prompt = null) {
 8) Total Amount
 9) Quantity
 
-Note:
-- The feature names in the invoice text may vary, but you need to map them correctly to the keys above.
-- For "Customer Name," it may be referred to as "Bill To," "Customer Name," "Name," or similar terms.
-- For "Invoice Number," it might appear as "Invoice No.," "Invoice Number," "Bill No.," or other variations.
-- "Supplier Name" can be referred to as "Store Name," "Supplier," "Seller," or "Company."
-- The "Date of Invoice" might be formatted in various ways, such as "Date," "Invoice Date," "Transaction Date," etc.
-- "Product Name" can appear as "Item Name," "Product," "Description," or "Item."
-- "Taxable Value" might be noted as "Total Taxable Value," "Taxable Amount," or similar.
-- "GST ID" can appear as "GST Number," "GSTIN," or "GST Identification Number."
-- "Total Amount" may be noted as "Total," "Total Amount," "Amount Due," or "Grand Total."
-- "Quantity" might be listed as "Quantity," "Qty," or "Units."
-
-Here is the invoice text you need to analyze:
+The feature names in the invoice text may vary, but you need to map them correctly to the keys above. Here is the invoice text you need to analyze:
 
 {Insert the invoice text here}
 
-Please return the extracted information in the following key-value format:
+Return only the following JSON object:
+
 {
   "Customer Name": "Extracted Customer Name",
   "Invoice Number": "Extracted Invoice Number",
@@ -137,6 +157,7 @@ Please return the extracted information in the following key-value format:
   "Total Amount": "Extracted Total Amount",
   "Quantity": "Extracted Quantity"
 }`;
+
 
 
   const payload = {
