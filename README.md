@@ -1,5 +1,5 @@
 
-# **InvoicePro - Automated Invoice Extraction and Analysis Tool**  
+# **InvoicePro - Intelligent Invoice Extraction and Analysis Tool**  
 *Developed by InnoSync Squad*
 ## **Team: InnoSync Squad**
 Ashish Tamhankar
