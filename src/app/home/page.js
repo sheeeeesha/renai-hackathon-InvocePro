@@ -242,15 +242,13 @@ const Page = () => {
           {/* Show the form if PDFs and table are not displayed */}
           {!showPDFs && !showTable && (
             <>
+            <p className="text-gray-700 text-center mb-6 text-lg">
+              InvoicePro is a cutting-edge tool designed to streamline the process of extracting and analyzing data from invoices. By leveraging advanced machine learning algorithms, the system can automatically parse invoice PDFs, extract key details such as customer names, invoice numbers, supplier information, and amounts, and organize them into structured, easy-to-use formats. Whether you’re managing a small business or handling large-scale accounting tasks, InvoicePro simplifies the invoicing process, improves accuracy, and saves valuable time. With an intuitive interface and seamless integration with your workflows, InvoicePro empowers businesses to efficiently track, manage, and analyze invoice data with minimal effort.
+              </p>
               <h2 className="text-3xl font-extrabold text-center text-purple-800 mb-6">
                 Enter Details
               </h2>
-              <p className="text-gray-700 text-center mb-6 text-lg">
-                Extract and organize data seamlessly by connecting to your
-                Gmail. Specify parameters like start/end dates and keywords to
-                retrieve PDFs such as invoices and receipts. Review, organize,
-                and download structured data effortlessly.
-              </p>
+              
               <ColumnForm
                 columns={columns}
                 handleColumnChange={handleColumnChange}
