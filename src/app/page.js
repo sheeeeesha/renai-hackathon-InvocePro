@@ -1,17 +1,23 @@
 // components/Home.jsx
 
-import Link from 'next/link';
+import Link from "next/link";
+import LandingHead from "@/components/LandingHead";
 
 const Home = () => (
-  <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-teal-400 to-blue-500">
-    <div className="bg-white p-10 rounded-lg shadow-lg max-w-md w-full text-center">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Welcome to InvoicePro</h1>
-      <p className="text-xl text-gray-600 mb-8">Please click below to get started.</p>
-      <Link
-        href="/auth"
-        className="px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition duration-300"
-      >
-        Go to Authenticate
+  <div className="flex-col items-center justify-center min-h-screen bg-auth-bg bg-cover bg-center">
+    <LandingHead />
+    <div className="flex flex-col items-center w-full h-fit py-16">
+      <h1 className="font-lexend text-5xl text-center mt-20 p-5">
+        Revolutionize Your Invoice Management
+      </h1>
+      <p className="px-8 md:px-56 font-exo text-lg text-center text-gray-400">
+        Say goodbye to manual data entry! With InvoicePro, effortlessly extract,
+        analyze, and organize invoice details with just a few clicks.
+      </p>
+      <Link href={"/auth"}>
+        <button className="mt-10 px-6 py-3 text-white font-lexend rounded-lg bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700">
+          Get Started
+        </button>
       </Link>
     </div>
   </div>

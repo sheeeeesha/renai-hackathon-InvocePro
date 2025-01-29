@@ -129,7 +129,7 @@ async function processExtractedTextWithWorqHat(extractedText, prompt = null) {
 
 const trainingData = prompt
   ? prompt
-  : `Please analyze the following invoice text and extract the relevant information strictly in a valid JSON format. Only return the JSON object and nothing else. The keys should be:
+  : `Please analyze the following invoice text and extract the relevant information strictly in a valid JSON format.the format should be strictly JSON. I do not want anuthing else. Only return the JSON object and nothing else. The keys should be:
 1) Customer Name
 2) Invoice Number
 3) Supplier Name (or Store Name)
