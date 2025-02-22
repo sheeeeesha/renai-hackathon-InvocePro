@@ -74,96 +74,148 @@ const Page = () => {
     }
   };
 
+  
+  // const handleGenerateTable = async () => {
+  //   console.log("handleGenerateTable invoked");
+  
+  //   try {
+  //     console.log("Fetching data from the backend...");
+  //     const response = await fetch("http://localhost:5000/start-process", {
+  //       method: "GET", // Adjust this if your backend expects a POST
+  //     });
+  
+  //     if (response.ok) {
+  //       console.log("Backend responded successfully.");
+  //       const responseData = await response.json();
+  //       console.log("Response data from backend:", responseData);
+  
+  //       // Log the full response to check its structure
+  //       console.log("Full Backend Response:", responseData);
+  
+  //       // Check if the response contains the 'data' field and process each entry
+  //       if (responseData.success && responseData.data && Array.isArray(responseData.data)) {
+  //         console.log("Processing extracted data...");
+  
+  //         // Process each entry in the 'data' field, especially 'table.content'
+  //         const processedDataPromises = responseData.data.map(async (item) => {
+  //           if (item.table && item.table.content) {
+  //             try {
+  //               // Step 1: Clean the string by removing backticks and newline characters
+  //               let cleanedContent = item.table.content.replace(/^```json\n/, '').replace(/```\n$/, '').trim();
+  
+  //               // Step 2: Parse the cleaned content to JSON
+  //               const parsedContent = JSON.parse(cleanedContent);
+  //               console.log("Parsed Content:", parsedContent);
+  //               return parsedContent;
+  //             } catch (error) {
+  //               console.error("Error parsing content:", error);
+  //               // Handle cases where the content is not valid JSON
+  //               return {};
+  //             }
+  //           } else {
+  //             console.error("No valid content found in table:", item);
+  //             return {};
+  //           }
+  //         });
+  
+  //         const processedData = await Promise.all(processedDataPromises);
+  //         console.log("Processed Data:", processedData);
+  
+  //         // Map processed data to the table format
+  //         const mappedTableData = processedData.map((entry) => ({
+  //           customerName: entry["Customer Name"] || "N/A",
+  //           invoiceNumber: entry["Invoice Number"] || "N/A",
+  //           supplierName: entry["Supplier Name"] || "N/A",
+  //           date: entry["Date"] || "N/A",
+  //           productName: Array.isArray(entry["Product Name"]) ? entry["Product Name"].join(", ") : entry["Product Name"] || "N/A",
+  //           taxableValue: entry["Taxable Value"] || "N/A",
+  //           gstId: entry["GST ID"] || "N/A",
+  //           totalAmount: entry["Total Amount"] || "N/A",
+  //           quantity: Array.isArray(entry["Quantity"]) ? entry["Quantity"].join(", ") : entry["Quantity"] || "N/A",
+  //         }));
+  
+  //         // Set the table data state with the processed and mapped data
+  //         setTableData(mappedTableData);
+  
+  //         setShowTable(true); // Show the table
+  //         console.log("Table data set successfully.");
+  //       } else {
+  //         console.error("Invalid response format or no valid data:", responseData);
+  //         alert("Failed to process data. Please check the console for details.");
+  //       }
+  //     } else {
+  //       console.error("Failed to fetch data from backend. Status:", response.status);
+  //       alert("Failed to fetch data from backend. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in handleGenerateTable:", error);
+  //     alert("An error occurred while generating the table. Please check the console for details.");
+  //   }
+  // };
+
   const handleGenerateTable = async () => {
     console.log("handleGenerateTable invoked");
   
     try {
       console.log("Fetching data from the backend...");
       const response = await fetch("http://localhost:5000/start-process", {
-        method: "GET", // Adjust this if your backend expects a POST
+        method: "GET", // Adjust if your backend expects POST
       });
   
       if (response.ok) {
         console.log("Backend responded successfully.");
         const responseData = await response.json();
-        console.log("Response data from backend:", responseData);
-  
-        // Log the full response to check its structure
         console.log("Full Backend Response:", responseData);
   
-        // Check if the response contains the 'data' field and process each entry
         if (responseData.success && responseData.data && Array.isArray(responseData.data)) {
           console.log("Processing extracted data...");
   
-          // Process each entry in the 'data' field, especially 'table.content'
-          // const processedDataPromises = responseData.data.map(async (item) => {
-          //   if (item.table && item.table.content) {
-          //     try {
-          //       // Step 1: Clean the string by removing backticks and newline characters
-          //       let cleanedContent = item.table.content.replace(/^```json\n/, '').replace(/```\n$/, '').trim();
-  
-          //       // Step 2: Parse the cleaned content to JSON
-          //       const parsedContent = JSON.parse(cleanedContent);
-          //       console.log("Parsed Content:", parsedContent);
-          //       return parsedContent;
-          //     } catch (error) {
-          //       console.error("Error parsing content:", error);
-          //       // Handle cases where the content is not valid JSON
-          //       return {};
-          //     }
-          //   } else {
-          //     console.error("No valid content found in table:", item);
-          //     return {};
-          //   }
-          // });
-
           const processedDataPromises = responseData.data.map(async (item) => {
             if (item.table && item.table.content) {
               try {
-                // Step 1: Clean the string by removing backticks and newline characters
-                let cleanedContent = item.table.content
-                  .replace(/^```json\s*/, '') // Remove the opening ```json
-                  .replace(/\s*```$/, '')    // Remove the closing ```
-                  .trim();
+                // Step 1: Clean the string by removing ```json and ending ```
+                let cleanedContent = item.table.content.replace(/```[\s\S]*?json[\s\S]*?\n/, "").replace(/```$/, "").trim();
   
-                console.log("Cleaned Content:", cleanedContent);
+                console.log("Cleaned Content Before Parsing:", cleanedContent);
   
-                // Step 2: Parse the cleaned content to JSON
+                // Step 2: Parse JSON safely
                 const parsedContent = JSON.parse(cleanedContent);
                 console.log("Parsed Content:", parsedContent);
+  
                 return parsedContent;
               } catch (error) {
-                console.error("Error parsing JSON content:", error, "Content:", item.table.content);
-                // Handle cases where the content is not valid JSON
-                return {};
+                console.error("Error parsing content:", error);
+                return {}; // Return empty object if JSON parsing fails
               }
             } else {
               console.error("No valid content found in table:", item);
               return {};
             }
           });
-          
   
           const processedData = await Promise.all(processedDataPromises);
           console.log("Processed Data:", processedData);
   
-          // Map processed data to the table format
-          const mappedTableData = processedData.map((entry) => ({
-            customerName: entry["Customer Name"] || "N/A",
-            invoiceNumber: entry["Invoice Number"] || "N/A",
-            supplierName: entry["Supplier Name"] || "N/A",
-            date: entry["Date"] || "N/A",
-            productName: Array.isArray(entry["Product Name"]) ? entry["Product Name"].join(", ") : entry["Product Name"] || "N/A",
-            taxableValue: entry["Taxable Value"] || "N/A",
-            gstId: entry["GST ID"] || "N/A",
-            totalAmount: entry["Total Amount"] || "N/A",
-            quantity: Array.isArray(entry["Quantity"]) ? entry["Quantity"].join(", ") : entry["Quantity"] || "N/A",
-          }));
+          // Mapping data to table format
+          const mappedTableData = processedData.map((entry) => {
+            // Normalize keys for safety
+            const normalizeKey = (key) => Object.keys(entry).find(k => k.trim().toLowerCase() === key) || key;
   
-          // Set the table data state with the processed and mapped data
+            return {
+              customerName: entry[normalizeKey("Customer Name")] || "N/A",
+              invoiceNumber: entry[normalizeKey("Invoice Number")] || "N/A",
+              supplierName: entry[normalizeKey("Supplier Name")] || "N/A",
+              date: entry[normalizeKey("Date")] || "N/A",
+              productName: Array.isArray(entry[normalizeKey("Product Name")]) ? entry[normalizeKey("Product Name")].join(", ") : entry[normalizeKey("Product Name")] || "N/A",
+              taxableValue: entry[normalizeKey("Taxable Value")] || "N/A",
+              gstId: entry[normalizeKey("GST ID")] || "N/A",
+              totalAmount: entry[normalizeKey("Total Amount")] || "N/A",
+              quantity: Array.isArray(entry[normalizeKey("Quantity")]) ? entry[normalizeKey("Quantity")].join(", ") : entry[normalizeKey("Quantity")] || "N/A",
+            };
+          });
+  
           setTableData(mappedTableData);
-  
-          setShowTable(true); // Show the table
+          setShowTable(true);
           console.log("Table data set successfully.");
         } else {
           console.error("Invalid response format or no valid data:", responseData);
