@@ -1,11 +1,6 @@
 
 # **InvoicePro - Intelligent Invoice Extraction and Analysis Tool**  
-*Developed by InvoSync Squad*
-## **Team: InvoSync Squad**
-Ashish Tamhankar |
-Anirudh Gupta |
-Manan Dadoo |
-Keshav Sonawane 
+
 
 # **.env variables**
 WORQHAT_API_KEY |
